@@ -1,5 +1,6 @@
 package com.kss.WebClientDemo.controller;
 
+import com.kss.WebClientDemo.customresponse.ApiResponse;
 import com.kss.WebClientDemo.model.User;
 import com.kss.WebClientDemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +21,16 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/getWeb")
-    public ResponseEntity<List<User>> getAllData(){
-        return new ResponseEntity<>(userService.consumeApi() , HttpStatus.OK);
+    public ResponseEntity<ApiResponse> getAllData(){
+        ApiResponse apiResponse = new ApiResponse("Success" , "data found", userService.consumeApi());
+        return ResponseEntity.ok(apiResponse);
+//        return new ResponseEntity<>(userService.consumeApi() , HttpStatus.OK);
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<List<User>> getById(@PathVariable int id){
-        return new ResponseEntity<>(userService.consumeApiById(id) , HttpStatus.OK);
+    public ResponseEntity<ApiResponse> getById(@PathVariable int id){
+        ApiResponse apiResponse = new ApiResponse("Success" ,"single data of external api", userService.consumeApiById(id));
+        return ResponseEntity.ok(apiResponse);
+//        return new ResponseEntity<>(userService.consumeApiById(id) , HttpStatus.OK);
     }
 }
