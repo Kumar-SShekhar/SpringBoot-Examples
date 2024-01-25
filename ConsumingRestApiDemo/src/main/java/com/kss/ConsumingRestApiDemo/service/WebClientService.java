@@ -1,5 +1,6 @@
-package com.kss.WebClientDemo.service;
-import com.kss.WebClientDemo.model.User;
+package com.kss.ConsumingRestApiDemo.service;
+
+import com.kss.ConsumingRestApiDemo.model.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -7,14 +8,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.List;
 
 @Service
-public class UserService {
+public class WebClientService {
 
     @Autowired
     private WebClient.Builder webclient;
 
     private final String baseUri = "https://jsonplaceholder.typicode.com/todos/";
 
-    public List<User> consumeApi(){
+    public List<Todo> consumeApi(){
 //        return (List<User>) webclient.build()
 //                .get()
 //                .uri(baseUri)
@@ -22,14 +23,14 @@ public class UserService {
 //                .bodyToMono(List.class)
 //                .block();
 
-        return webclient.build().get().uri(baseUri).retrieve().bodyToFlux(User.class).collectList().block();
+        return webclient.build().get().uri(baseUri).retrieve().bodyToFlux(Todo.class).collectList().block();
 
         /* Below I used Webclient interface directly . We can use this without creating a bean of Webclient*/
 //        return WebClient.builder().build().get().uri(baseUri).retrieve().bodyToFlux(User.class).collectList().block();
 
     }
 
-    public List<User> consumeApiById(int id){
+    public List<Todo> consumeApiById(int id){
         String apiUrl = baseUri + "?id=" +id;
         return webclient.build()
                 .get()
@@ -39,7 +40,13 @@ public class UserService {
                 .block();
     }
 
+    public List<Todo>  consumeApiByUserId(int userId){
+        String apiUrl = baseUri + "?userId=" + userId;
+        return webclient.build().get().uri(apiUrl).retrieve().bodyToFlux(Todo.class).collectList().block();
+    }
 
-
-
+    public List<Todo>  consumeApiByCompleted(boolean completed){
+        String apiUrl = baseUri + "?completed=" + completed;
+        return webclient.build().get().uri(apiUrl).retrieve().bodyToFlux(Todo.class).collectList().block();
+    }
 }
