@@ -9,8 +9,12 @@ import java.util.List;
 @Service
 public class UserService {
 
-    @Autowired
+//    @Autowired
     private WebClient.Builder webclient;
+
+    public UserService(WebClient.Builder webclient){
+        this.webclient=webclient;
+    }
 
     private final String baseUri = "https://jsonplaceholder.typicode.com/todos/";
 
