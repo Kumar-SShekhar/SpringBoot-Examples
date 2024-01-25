@@ -38,4 +38,9 @@ public class RestTemplateService {
         String apiUrl = baseUri + "?completed=" + completed;
         return restTemplate.getForObject(apiUrl, List.class);
     }
+
+    public List<Todo> consumeApiByUserIdAndId(int userId , int id){
+        String apiUrl = baseUri + "?userId={userId}&id={id}";
+        return restTemplate.getForObject(apiUrl , List.class , userId ,id);
+    }
 }

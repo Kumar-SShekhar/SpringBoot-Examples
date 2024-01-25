@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User {
+public class Todo {
 
     @JsonProperty("userId")
     private int userId;

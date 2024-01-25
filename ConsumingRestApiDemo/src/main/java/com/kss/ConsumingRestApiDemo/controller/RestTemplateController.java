@@ -42,4 +42,9 @@ public class RestTemplateController {
     public ResponseEntity<List<Todo>> getUserByCompleted(@PathVariable boolean completed) {
         return new ResponseEntity<>(restTemplateService.consumeApiByCompleted(completed), HttpStatus.OK);
     }
+
+    @GetMapping("/getUserByUserIdAndId/{userId}/{id}")
+    public ResponseEntity<List<Todo>> getUserByUserIdAndId(@PathVariable int userId , @PathVariable int id){
+        return new ResponseEntity<>(restTemplateService.consumeApiByUserIdAndId(userId , id) , HttpStatus.OK);
+    }
 }

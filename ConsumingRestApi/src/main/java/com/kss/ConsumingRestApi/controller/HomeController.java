@@ -1,6 +1,6 @@
 package com.kss.ConsumingRestApi.controller;
 
-import com.kss.ConsumingRestApi.model.User;
+import com.kss.ConsumingRestApi.model.Todo;
 import com.kss.ConsumingRestApi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,23 +21,28 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<User>> getAllData() {
+    public ResponseEntity<List<Todo>> getAllData() {
         return new ResponseEntity<>(userService.consumeAPI(), HttpStatus.OK);
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<List<User>> getUserById(@PathVariable int id) {
+    public ResponseEntity<List<Todo>> getUserById(@PathVariable int id) {
         return new ResponseEntity<>(userService.consumeApiById(id), HttpStatus.OK);
     }
 
     @GetMapping("/userId/{userId}")
-    public ResponseEntity<List<User>> getUserByUserId(@PathVariable int userId) {
+    public ResponseEntity<List<Todo>> getUserByUserId(@PathVariable int userId) {
         return new ResponseEntity<>(userService.consumeApiByUserId(userId), HttpStatus.OK);
     }
 
     @GetMapping("/completed/{completed}")
-    public ResponseEntity<List<User>> getUserByCompleted(@PathVariable boolean completed) {
+    public ResponseEntity<List<Todo>> getUserByCompleted(@PathVariable boolean completed) {
         return new ResponseEntity<>(userService.consumeApiByCompleted(completed), HttpStatus.OK);
+    }
+
+    @GetMapping("/both/{userId}/id/{id}")
+    public ResponseEntity<List<Todo>> getUserByUserIdAndId(@PathVariable int userId , @PathVariable int id){
+        return new ResponseEntity<>(userService.consumeApiByUserIdAndId(userId , id) , HttpStatus.OK);
     }
 
 }
