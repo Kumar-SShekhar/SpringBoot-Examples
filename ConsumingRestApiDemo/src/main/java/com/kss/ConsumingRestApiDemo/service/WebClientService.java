@@ -16,18 +16,7 @@ public class WebClientService {
     private final String baseUri = "https://jsonplaceholder.typicode.com/todos/";
 
     public List<Todo> consumeApi(){
-//        return (List<User>) webclient.build()
-//                .get()
-//                .uri(baseUri)
-//                .retrieve()
-//                .bodyToMono(List.class)
-//                .block();
-
         return webclient.build().get().uri(baseUri).retrieve().bodyToFlux(Todo.class).collectList().block();
-
-        /* Below I used Webclient interface directly . We can use this without creating a bean of Webclient*/
-//        return WebClient.builder().build().get().uri(baseUri).retrieve().bodyToFlux(User.class).collectList().block();
-
     }
 
     public List<Todo> consumeApiById(int id){

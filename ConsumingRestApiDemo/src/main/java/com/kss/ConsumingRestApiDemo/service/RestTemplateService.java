@@ -21,8 +21,7 @@ public class RestTemplateService {
     }
 
     public List<Todo> consumeAPI(){
-        String apiUrl = "https://jsonplaceholder.typicode.com/todos/";
-        return restTemplate.getForObject(apiUrl, List.class);
+        return restTemplate.getForObject(baseUri, List.class);
     }
 
     public List<Todo>  consumeApiById(int id){

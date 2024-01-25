@@ -18,7 +18,6 @@ public class RestTemplateController {
 
     private final RestTemplateService restTemplateService;
 
-    
     @Autowired
     public RestTemplateController(RestTemplateService restTemplateService) {
         this.restTemplateService = restTemplateService;
