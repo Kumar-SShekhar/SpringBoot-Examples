@@ -1,27 +1,26 @@
 package com.kss.SimpleSpringSecurityDemo.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 //@RequestMapping
 public class UserController {
 
     @GetMapping("/public")
-    public String getAllPublic(){
-        return "Admin";
+    public String getPublic(){
+        return "Public";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/public/abc")
-    public String getAllPublicAbc(){
-        return "Admin abc";
+    @GetMapping("/getAdmin")
+    public String getAdmin(){
+        return "Admin xyz";
     }
 
-    @GetMapping("/p")
+    @GetMapping("/getOthers")
     public String getOther(){
         return "Others";
     }
+
 }
