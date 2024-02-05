@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 //@RequestMapping
 public class UserController {
 
-    @GetMapping("/public")
+    @GetMapping("/")
     public String getPublic(){
         return "Public";
     }
@@ -22,5 +22,7 @@ public class UserController {
     public String getOther(){
         return "Others";
     }
+
+    
 
 }
