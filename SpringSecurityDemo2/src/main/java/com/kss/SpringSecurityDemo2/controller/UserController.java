@@ -58,7 +58,8 @@ public class UserController {
     public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("Login successful" , HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Login successful" , HttpStatus.OK);
 
     }
+
 }

@@ -22,18 +22,12 @@ public class MyUserDetailsService implements UserDetailsService {
     @Autowired
     public UserRepository userRepository;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUserName(username);
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        User user = userRepository.findByUserName(userName);
         if (user==null){
-            throw new UsernameNotFoundException("User not found with: " + username);
+            throw new UsernameNotFoundException("User not found with: " + userName);
         }
 
-
-//        Set<GrantedAuthority> authorities = user.getRoles().stream()
-//                .map((role) -> new SimpleGrantedAuthority(role.getName()))
-//                .collect(Collectors.toSet());
-
-//        return new org.springframework.security.core.userdetails.User(user.getUserName() , user.getPassword(),authorities);
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
