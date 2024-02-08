@@ -1,14 +1,15 @@
 package com.kss.SpringSecurityDemo2.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-public class SignUpDto {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class AuthenticationResponse {
 
-    private String name;
-    private String userName;
-    private String email;
-    private String password;
+    private String token;
 }
