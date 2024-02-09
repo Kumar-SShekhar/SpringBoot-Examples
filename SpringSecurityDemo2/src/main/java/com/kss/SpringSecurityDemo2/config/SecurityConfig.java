@@ -18,24 +18,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
 
-    private final UserRepository userRepository;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
-
-
-
-    /* Below is the same method as above but without using lambda */
-//    @Bean
-//    public UserDetailsService userDetailsService(){
-//        return new UserDetailsService() {
-//            @Override
-//            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//                return null;
-//            }
-//        };
-//
-//    }
-
 
 
     @Bean
@@ -45,7 +29,7 @@ public class SecurityConfig {
 //                .exceptionHandling(Customizer.withDefaults())
 
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/**", "/api/auth/login" ).permitAll()
+                    auth.requestMatchers("/api/auth/register", "/api/auth/login" ).permitAll()
                     .anyRequest().authenticated();
                 })
                 .sessionManagement( sm-> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
