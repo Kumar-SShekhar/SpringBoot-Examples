@@ -19,7 +19,7 @@ public class AppSecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/demo/**","/public" ).permitAll()
+                    auth.requestMatchers("/api/auth/**" ).permitAll()
                     .anyRequest().authenticated();
                 })
                 .formLogin(Customizer.withDefaults())

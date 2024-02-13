@@ -1,4 +1,4 @@
-package com.kss.SpringSecurityWithSQL.controller;
+package com.kss.SpringSecurityWithSQL.service;
 
 import com.kss.SpringSecurityWithSQL.dto.LoginDto;
 import com.kss.SpringSecurityWithSQL.dto.SignUpDto;
@@ -6,38 +6,30 @@ import com.kss.SpringSecurityWithSQL.entity.Role;
 import com.kss.SpringSecurityWithSQL.entity.User;
 import com.kss.SpringSecurityWithSQL.repository.RoleRepository;
 import com.kss.SpringSecurityWithSQL.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
+
 
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+
+@Service
+@RequiredArgsConstructor
+public class AuthenticationService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
 
 
-@RestController
-@RequestMapping("/demo")
-public class UserController {
-
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody SignUpDto signUpDto){
+    public String registerUser(SignUpDto signUpDto){
         if(userRepository.existsByEmail(signUpDto.getEmail()) || userRepository.existsByUserName(signUpDto.getUserName())){
-            return new ResponseEntity<>("User already exists" , HttpStatus.BAD_REQUEST);
+            return "User already exists";
         }
 
         User user = new User();
@@ -51,15 +43,14 @@ public class UserController {
         user.setRoles(Collections.singletonList(roles));
         userRepository.save(user);
 
-        return new ResponseEntity<>("User registered successfully" , HttpStatus.CREATED);
+        return "User registered successfully" ;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginDto loginDto){
+
+    public String loginUser( LoginDto loginDto){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("Login successful" , HttpStatus.OK);
+        return "Login successful" ;
 
     }
-
 }
