@@ -28,6 +28,14 @@ public class JwtService {
         return claimsResolver.apply(claims);
     }
 
+    private Claims extractAllClaims(String token){
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
 
 
     public String generateToken(Map<String, Object> extractClaims, UserDetails userDetails){
@@ -60,14 +68,7 @@ public class JwtService {
 
 
 
-    private Claims extractAllClaims(String token){
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
+
 
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
