@@ -24,22 +24,6 @@ public class AuthenticationController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody SignUpDto signUpDto){
         return new ResponseEntity<>(authenticationService.registerUser(signUpDto), HttpStatus.OK);
-//        if(userRepository.existsByEmail(signUpDto.getEmail()) || userRepository.existsByUserName(signUpDto.getUserName())){
-//            return new ResponseEntity<>("User already exists" , HttpStatus.BAD_REQUEST);
-//        }
-//
-//        User user = new User();
-//
-//        user.setName(signUpDto.getName());
-//        user.setUserName(signUpDto.getUserName());
-//        user.setEmail(signUpDto.getEmail());
-//        user.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
-//
-//        Role roles=roleRepository.findByName("USER").get();
-//        user.setRoles(Collections.singletonList(roles));
-//        userRepository.save(user);
-//
-//        return new ResponseEntity<>("User registered successfully" , HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
