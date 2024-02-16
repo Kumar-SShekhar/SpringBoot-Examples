@@ -1,0 +1,5 @@
+16:13:59.383 [restartedMain] INFO  c.s.L.LoggingDemoApplication - Starting LoggingDemoApplication using Java 21.0.1 with PID 12032 (D:\SpringBoot_Examples\LoggingDemo\target\classes started by Kumar_Shekhar in D:\SpringBoot_Examples\LoggingDemo)
+16:13:59.391 [restartedMain] DEBUG c.s.L.LoggingDemoApplication - Running with Spring Boot v3.2.2, Spring v6.1.3
+16:13:59.392 [restartedMain] INFO  c.s.L.LoggingDemoApplication - No active profile set, falling back to 1 default profile: "default"
+16:13:59.472 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+16:13:59.473 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
