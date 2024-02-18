@@ -1,5 +1,6 @@
 package com.kss.RestTemplateDemo.controller;
 
+import com.kss.RestTemplateDemo.customresponse.ApiResponse;
 import com.kss.RestTemplateDemo.model.User;
 import com.kss.RestTemplateDemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,9 @@ public class UserController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<User>> getAllData() {
-        return new ResponseEntity<>(userService.consumeAPI(), HttpStatus.OK);
+    public ResponseEntity<ApiResponse> getAllData() {
+        ApiResponse apiResponse=new ApiResponse("Success", "Found All data", userService.consumeAPI());
+        return ResponseEntity.ok(apiResponse);
     }
 
     @GetMapping("/getById/{id}")
