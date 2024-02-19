@@ -1,6 +1,10 @@
 package com.kss.RestTemplateDemo.controller;
 
+<<<<<<< HEAD
 import com.kss.RestTemplateDemo.customresponse.ApiResponse;
+=======
+import com.kss.RestTemplateDemo.customrresponse.ApiResponse;
+>>>>>>> origin/main
 import com.kss.RestTemplateDemo.model.User;
 import com.kss.RestTemplateDemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,18 +30,28 @@ public class UserController {
 
     @GetMapping("/getAll")
     public ResponseEntity<ApiResponse> getAllData() {
+<<<<<<< HEAD
         ApiResponse apiResponse=new ApiResponse("Success", "Found All data", userService.consumeAPI());
         return ResponseEntity.ok(apiResponse);
+=======
+        List<User> users = userService.consumeAPI();
+        ApiResponse apiResponse = new ApiResponse("Success", "Users data" , users);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+>>>>>>> origin/main
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<List<User>> getUserById(@PathVariable int id) {
-        return new ResponseEntity<>(userService.consumeApiById(id), HttpStatus.OK);
+    public ResponseEntity<ApiResponse> getUserById(@PathVariable int id) {
+        List<User> user=userService.consumeApiById(id);
+        ApiResponse apiResponse = new ApiResponse("Success" , "User found" , user);
+        return ResponseEntity.status(HttpStatus.FOUND).body(apiResponse);
     }
 
     @GetMapping("/getByUserId/{userId}")
-    public ResponseEntity<List<User>> getUserByUserId(@PathVariable int userId) {
-        return new ResponseEntity<>(userService.consumeApiByUserId(userId), HttpStatus.OK);
+    public ResponseEntity<ApiResponse> getUserByUserId(@PathVariable int userId) {
+        List<User> user= userService.consumeApiByUserId(userId);
+        ApiResponse apiResponse = new ApiResponse("Success" , "User Found", user);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
     @GetMapping("/getByCompleted/{completed}")

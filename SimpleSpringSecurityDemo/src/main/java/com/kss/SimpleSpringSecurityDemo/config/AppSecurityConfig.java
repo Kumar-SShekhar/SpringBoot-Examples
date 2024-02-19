@@ -25,7 +25,7 @@ public class AppSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> {
-                    authorize.requestMatchers("/public", "/getOthers").permitAll();
+                    authorize.requestMatchers("/", "/getOthers").permitAll();
                     authorize.anyRequest().authenticated(); })
                 .formLogin(Customizer.withDefaults() )
                 .httpBasic(Customizer.withDefaults());
@@ -54,20 +54,5 @@ public class AppSecurityConfig {
         return new InMemoryUserDetailsManager(abc, xyz);
     }
 
-//    @Bean
-//    public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests((authorize) -> authorize
-//                        .requestMatchers("/public/*").permitAll()
-//                        .anyRequest().authenticated())
-//                .httpBasic(Customizer.withDefaults());
-//
-//        return http.build();
-//    }
-//
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-//        return authenticationConfiguration.getAuthenticationManager();
-//    }
 
 }

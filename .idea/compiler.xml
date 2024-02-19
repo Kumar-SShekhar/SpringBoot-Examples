@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="WebClientDemo" />
+        <module name="ConsumingRestApi" />
+        <module name="SpringSecurityDemo2" />
+        <module name="RestTemplateDemo" />
+        <module name="ConsumingRestApiDemo" />
+        <module name="SimpleSpringSecurityDemo" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ConsumingRestApi" options="-parameters" />
+      <module name="ConsumingRestApiDemo" options="-parameters" />
+      <module name="RestTemplateDemo" options="-parameters" />
+      <module name="SimpleSpringSecurityDemo" options="-parameters" />
+      <module name="SpringSecurityDemo2" options="-parameters" />
+      <module name="WebClientDemo" options="-parameters" />
+    </option>
+  </component>
+</project>
