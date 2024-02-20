@@ -10,7 +10,10 @@ import com.kss.SpringSecurityDemo2.repository.TokenRepository;
 import com.kss.SpringSecurityDemo2.repository.UserRepository;
 import com.kss.SpringSecurityDemo2.token.Token;
 import com.kss.SpringSecurityDemo2.token.TokenType;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,9 +39,11 @@ public class AuthenticationService {
 
         User savedUser = userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
+        String jwtRefreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(jwtToken)
+                .refreshToken(jwtRefreshToken)
                 .build();
     }
 
@@ -49,11 +54,39 @@ public class AuthenticationService {
         );
         User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow();
         String jwtToken = jwtService.generateToken(user);
+        String jwtRefreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user,jwtToken);
         return AuthenticationResponse.builder()
-                .token(jwtToken)
+                .accessToken(jwtToken)
+                .refreshToken(jwtRefreshToken)
                 .build();
+    }
+
+    public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response){
+        final String authHeader= request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String jwtRefreshToken;
+        final String userEmail;
+        AuthenticationResponse authResponse=null;
+        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+            return null;
+        }
+        jwtRefreshToken=authHeader.substring(7);
+        userEmail=jwtService.extractUsername(jwtRefreshToken);
+        if(userEmail!=null) {
+            var user = userRepository.findByEmail(userEmail).orElseThrow();
+            if(jwtService.isTokenValid(jwtRefreshToken, user)){
+                var jwtAccessToken = jwtService.generateToken(user);
+                revokeAllUserTokens(user);
+                saveUserToken(user, jwtAccessToken);
+                authResponse = AuthenticationResponse.builder()
+                        .accessToken(jwtAccessToken)
+                        .refreshToken(jwtRefreshToken)
+                        .build();
+//                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);  // If we use void as return type
+            }
+        }
+        return authResponse;
     }
 
     private void saveUserToken(User user , String jwtToken){
