@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/ConsumingRestApi/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ConsumingRestApiDemo/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/RestTemplateDemo/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/SimpleSpringSecurityDemo/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/SpringSecurityDemo2/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/WebClientDemo/src/main/java" charset="UTF-8" />
   </component>
 </project>

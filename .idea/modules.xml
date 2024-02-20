@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
+      <module fileurl="file://$PROJECT_DIR$/.idea/SpringBoot-Examples.iml" filepath="$PROJECT_DIR$/.idea/SpringBoot-Examples.iml" />
+=======
       <module fileurl="file://$PROJECT_DIR$/.idea/SpringBoot_Examples.iml" filepath="$PROJECT_DIR$/.idea/SpringBoot_Examples.iml" />
+>>>>>>> origin/main
     </modules>
   </component>
 </project>
