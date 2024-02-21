@@ -2,6 +2,7 @@ package com.kss.SpringSecurityDemo2.service;
 
 import com.kss.SpringSecurityDemo2.config.JwtService;
 import com.kss.SpringSecurityDemo2.dto.AuthenticationResponse;
+import com.kss.SpringSecurityDemo2.dto.ChangePasswordDto;
 import com.kss.SpringSecurityDemo2.dto.LoginDto;
 import com.kss.SpringSecurityDemo2.dto.RegisterDto;
 import com.kss.SpringSecurityDemo2.entity.Role;
