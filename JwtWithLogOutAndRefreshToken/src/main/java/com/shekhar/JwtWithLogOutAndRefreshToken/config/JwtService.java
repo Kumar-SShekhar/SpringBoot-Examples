@@ -1,4 +1,4 @@
-package com.kss.SpringSecurityDemo2.config;
+package com.shekhar.JwtWithLogOutAndRefreshToken.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
