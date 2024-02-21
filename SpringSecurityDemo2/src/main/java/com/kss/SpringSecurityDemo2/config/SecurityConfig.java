@@ -32,7 +32,7 @@ public class SecurityConfig {
 //                .exceptionHandling(Customizer.withDefaults())
 
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/register", "/api/auth/login" ).permitAll()
+                    auth.requestMatchers("/api/auth/**", "/api/auth/login" ).permitAll()
                     .anyRequest().authenticated();
                 })
                 .sessionManagement( sm-> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
