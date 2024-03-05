@@ -4,11 +4,13 @@ import com.kss.SpringSecurityDemo2.dto.AuthenticationResponse;
 import com.kss.SpringSecurityDemo2.dto.LoginDto;
 import com.kss.SpringSecurityDemo2.dto.RegisterDto;
 import com.kss.SpringSecurityDemo2.service.AuthenticationService;
+import jakarta.servlet.SessionTrackingMode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -34,6 +36,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> refresh(HttpServletRequest request, HttpServletResponse response){
         return new ResponseEntity<>(authenticationService.refreshToken(request, response), HttpStatus.OK);
     }
+    
 
 
 }

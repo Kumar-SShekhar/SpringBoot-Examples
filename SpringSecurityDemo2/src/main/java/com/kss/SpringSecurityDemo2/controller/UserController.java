@@ -33,4 +33,14 @@ public class UserController {
         return ResponseEntity.status(200).body(message);
     }
 
+    @PostMapping("/sendmail/{email}")
+    public ResponseEntity<String> sendMail(@PathVariable String email){
+        return new ResponseEntity<>(userService.sendEmail(email), HttpStatus.OK);
+    }
+
+    @PostMapping("/sendotp/{email}")
+    public ResponseEntity<String> sendEmailOtp(@PathVariable String email){
+        return new ResponseEntity<>(userService.sendEmailOtp(email), HttpStatus.OK);
+    }
+
 }

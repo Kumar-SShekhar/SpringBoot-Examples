@@ -5,6 +5,7 @@ import com.kss.SpringSecurityDemo2.dto.AuthenticationResponse;
 import com.kss.SpringSecurityDemo2.dto.ChangePasswordDto;
 import com.kss.SpringSecurityDemo2.entity.User;
 import com.kss.SpringSecurityDemo2.repository.UserRepository;
+import com.kss.SpringSecurityDemo2.utils.EmailUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final EmailUtil emailUtil;
 
     public String changePassword(ChangePasswordDto changePasswordDto, HttpServletRequest request){
         final String authHeader= request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -49,4 +51,14 @@ public class UserService {
         }
         return "Password changed successfully";
     }
+
+    public String sendEmail(String email){
+        return emailUtil.sendEmail(email);
+    }
+
+    public String sendEmailOtp(String email){
+        return emailUtil.sendEmailOtp(email);
+    }
+
+
 }

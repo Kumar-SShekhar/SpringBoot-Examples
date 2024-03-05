@@ -2,7 +2,7 @@ package com.kss.SpringSecurityDemo2.service;
 
 import com.kss.SpringSecurityDemo2.config.JwtService;
 import com.kss.SpringSecurityDemo2.dto.AuthenticationResponse;
-import com.kss.SpringSecurityDemo2.dto.ChangePasswordDto;
+import com.kss.SpringSecurityDemo2.dto.ForgotPasswordVerificationDto;
 import com.kss.SpringSecurityDemo2.dto.LoginDto;
 import com.kss.SpringSecurityDemo2.dto.RegisterDto;
 import com.kss.SpringSecurityDemo2.entity.Role;
@@ -11,6 +11,8 @@ import com.kss.SpringSecurityDemo2.repository.TokenRepository;
 import com.kss.SpringSecurityDemo2.repository.UserRepository;
 import com.kss.SpringSecurityDemo2.token.Token;
 import com.kss.SpringSecurityDemo2.token.TokenType;
+import com.kss.SpringSecurityDemo2.utils.EmailUtil;
+import com.kss.SpringSecurityDemo2.utils.OtpGenerator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,9 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
+    private final EmailUtil emailUtil;
+    private final OtpGenerator otpGenerator;
+    private final OtpService otpService;
 
     public AuthenticationResponse registerUser(RegisterDto registerDto){
         User user = new User();
@@ -64,6 +69,37 @@ public class AuthenticationService {
                 .build();
     }
 
+    public String forgotPassword(String email){
+        User user=userRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("User not Found with this email"));
+        String generatedOtp = otpGenerator.generateOtp();
+        otpService.saveOtp(email,generatedOtp);
+        return "Otp sent successfully. Please type password and verify otp";
+    }
+    public String verifyForgotPassword(ForgotPasswordVerificationDto verificationDto){
+        User user = userRepository.findByEmail(verificationDto.getEmail()).orElseThrow(()-> new RuntimeException("User not found with this email"));
+        String enteredOtp = verificationDto.getOtp();
+        if(otpService.verifyOtp(user.getEmail(), enteredOtp)){
+            if(!verificationDto.getNewPassword().equals(verificationDto.getConfirmPassword())) {
+                return "Password doesn't match";
+            }
+        }
+        user.setPassword(passwordEncoder.encode(verificationDto.getNewPassword()));
+        userRepository.save(user);
+        return "Successful";
+    }
+
+//    public String loginBy(String email){
+//        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with this email"));
+//        String generatedOtp = otpGenerator.generateOtp();
+//        String sendOtp = emailUtil.sendEmailOtp(email);
+//        return "OTP sent successfully. Please verify to login";
+//    }
+//    public AuthenticationResponse verifyLoginOtp(String email,String otp){
+//        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with this email"));
+//
+//    }
+
+
     public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response){
         final String authHeader= request.getHeader(HttpHeaders.AUTHORIZATION);
         final String jwtRefreshToken;
@@ -84,7 +120,7 @@ public class AuthenticationService {
                         .accessToken(jwtAccessToken)
                         .refreshToken(jwtRefreshToken)
                         .build();
-//                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);  // If we use void as return type
+//                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);  // If we use void as return type but need to                                                                                                return authResponse
             }
         }
         return authResponse;
@@ -112,5 +148,4 @@ public class AuthenticationService {
         });
         tokenRepository.saveAll(validUserTokens);
     }
-
 }
