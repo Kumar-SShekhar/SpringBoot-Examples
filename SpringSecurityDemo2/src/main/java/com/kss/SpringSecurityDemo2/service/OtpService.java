@@ -19,6 +19,14 @@ public class OtpService {
     private final UserRepository userRepository;
 
     public void saveOtp(String email, String otp){
+        OtpEntity otpEntity = otpRepository.findByEmail(email);
+        if(otpEntity !=null ){
+            otpEntity.setOtp(otp);
+            otpEntity.setEmail(email);
+            otpEntity.setOtpGeneratedTime(LocalDateTime.now());
+            otpRepository.save(otpEntity);
+            return;
+        }
         OtpEntity newOtp = new OtpEntity();
         newOtp.setOtp(otp);
         newOtp.setEmail(email);
@@ -31,10 +39,10 @@ public class OtpService {
 
         String userEmail = user.getEmail();
         OtpEntity otpEntity = otpRepository.findByEmail(userEmail);
-        if(otpEntity.getOtp().equals(enteredOtp) && otpEntity.getEmail().equals(userEmail)){
+        if(otpEntity.getOtp().equals(enteredOtp) && otpEntity.getEmail().equals(email)){
 
             LocalDateTime currentTime = LocalDateTime.now();
-            LocalDateTime otpExpiryTime = otpEntity.getOtpGeneratedTime().plusMinutes(5);
+            LocalDateTime otpExpiryTime = otpEntity.getOtpGeneratedTime().plusMinutes(25);
             if( !currentTime.isAfter(otpExpiryTime) ){
                 return true;
             }else{

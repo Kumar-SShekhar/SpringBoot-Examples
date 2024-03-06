@@ -1,5 +1,6 @@
 package com.kss.SpringSecurityDemo2.utils;
 
+import com.kss.SpringSecurityDemo2.service.OtpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,6 +14,8 @@ public class EmailUtil {
     private JavaMailSender mailSender;
     @Autowired
     private OtpGenerator otpGenerator;
+    @Autowired
+    private OtpService otpService;
 
 
     public String sendEmail(String email){
@@ -34,6 +37,7 @@ public class EmailUtil {
         simpleMailMessage.setSubject("Otp for verification");
         simpleMailMessage.setText("Otp for your verification is: " + generatedOtp );
         mailSender.send(simpleMailMessage);
+        otpService.saveOtp(email,generatedOtp);
         return "email sent successfully";
 
     }

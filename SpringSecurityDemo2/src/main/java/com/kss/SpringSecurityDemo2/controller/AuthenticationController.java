@@ -1,6 +1,7 @@
 package com.kss.SpringSecurityDemo2.controller;
 
 import com.kss.SpringSecurityDemo2.dto.AuthenticationResponse;
+import com.kss.SpringSecurityDemo2.dto.ForgotPasswordVerificationDto;
 import com.kss.SpringSecurityDemo2.dto.LoginDto;
 import com.kss.SpringSecurityDemo2.dto.RegisterDto;
 import com.kss.SpringSecurityDemo2.service.AuthenticationService;
@@ -12,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 
 @RestController
@@ -36,7 +39,17 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> refresh(HttpServletRequest request, HttpServletResponse response){
         return new ResponseEntity<>(authenticationService.refreshToken(request, response), HttpStatus.OK);
     }
-    
+
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody Map<String,String> emailRequest){
+        return new ResponseEntity<>(authenticationService.forgotPassword(emailRequest.get("email")), HttpStatus.OK);
+    }
+
+    @PostMapping("/verify-forgot-password")
+    public ResponseEntity<String> verifyForgotPassword(@RequestBody ForgotPasswordVerificationDto forgotPasswordVerificationDto){
+        return new ResponseEntity<>(authenticationService.verifyForgotPassword(forgotPasswordVerificationDto),HttpStatus.OK);
+    }
 
 
 }

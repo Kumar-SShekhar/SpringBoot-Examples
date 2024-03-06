@@ -71,21 +71,42 @@ public class AuthenticationService {
 
     public String forgotPassword(String email){
         User user=userRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("User not Found with this email"));
-        String generatedOtp = otpGenerator.generateOtp();
-        otpService.saveOtp(email,generatedOtp);
+        emailUtil.sendEmailOtp(email);
         return "Otp sent successfully. Please type password and verify otp";
     }
     public String verifyForgotPassword(ForgotPasswordVerificationDto verificationDto){
         User user = userRepository.findByEmail(verificationDto.getEmail()).orElseThrow(()-> new RuntimeException("User not found with this email"));
         String enteredOtp = verificationDto.getOtp();
-        if(otpService.verifyOtp(user.getEmail(), enteredOtp)){
-            if(!verificationDto.getNewPassword().equals(verificationDto.getConfirmPassword())) {
-                return "Password doesn't match";
-            }
+
+        if(!verificationDto.getNewPassword().equals(verificationDto.getConfirmPassword())) {
+            return "Password doesn't match";
         }
-        user.setPassword(passwordEncoder.encode(verificationDto.getNewPassword()));
-        userRepository.save(user);
-        return "Successful";
+        else if(passwordEncoder.matches(verificationDto.getNewPassword(), user.getPassword() )) {
+            return "Current password and new password cannot be same";
+        }
+
+        else if(otpService.verifyOtp(user.getEmail(), enteredOtp)){
+            user.setPassword(passwordEncoder.encode(verificationDto.getNewPassword()));
+            userRepository.save(user);
+            return "Password changed Successfully";
+        }
+        return "Otp is invalid";
+
+
+
+//        if(otpService.verifyOtp(user.getEmail(), enteredOtp)){
+//            String currentPassword = user.getPassword();
+//            String hashedNewPassword = passwordEncoder.encode(verificationDto.getNewPassword());
+//            if(passwordEncoder.matches(verificationDto.getNewPassword(), user.getPassword() )) {
+//                return "Current password and new password cannot be same";
+//            }
+//            else if(!verificationDto.getNewPassword().equals(verificationDto.getConfirmPassword())) {
+//                return "Password doesn't match";
+//            }
+//        }
+//        user.setPassword(passwordEncoder.encode(verificationDto.getNewPassword()));
+//        userRepository.save(user);
+//        return "Password changed Successfully";
     }
 
 //    public String loginBy(String email){
