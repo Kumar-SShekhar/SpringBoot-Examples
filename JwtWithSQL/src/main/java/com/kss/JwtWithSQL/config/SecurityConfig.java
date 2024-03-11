@@ -27,7 +27,7 @@ public class SecurityConfig {
 //                .exceptionHandling(Customizer.withDefaults())
 
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/register", "/api/auth/login", "/demo/message" ).permitAll()
+                    auth.requestMatchers("/api/auth/**" ).permitAll()
                     .anyRequest().authenticated();
                 })
                 .sessionManagement( sm-> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

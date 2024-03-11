@@ -26,16 +26,16 @@ public class UserService {
 
     public String changePassword(ChangePasswordDto changePasswordDto, HttpServletRequest request){
         final String authHeader= request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String jwtRefreshToken;
+        final String jwt;
         final String userEmail;
         if(authHeader == null || !authHeader.startsWith("Bearer ")){
             return null;
         }
-        jwtRefreshToken=authHeader.substring(7);
-        userEmail=jwtService.extractUsername(jwtRefreshToken);
+        jwt=authHeader.substring(7);
+        userEmail=jwtService.extractUsername(jwt);
         if(userEmail!=null) {
             var user = userRepository.findByEmail(userEmail).orElseThrow();
-            if (jwtService.isTokenValid(jwtRefreshToken, user)) {
+            if (jwtService.isTokenValid(jwt, user)) {
                 if (!passwordEncoder.matches(changePasswordDto.getCurrentPassword(), user.getPassword())) {
                     return "Entered current password is wrong";
                 }
