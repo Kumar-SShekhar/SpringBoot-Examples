@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -21,6 +22,9 @@ import java.util.Collections;
 public class UserController {
 
     private final UserService userService;
+
+//    @PreAuthorize("hasRole('ADMIN)")
+    @PreAuthorize("hasRole(T(com.kss.SpringSecurityDemo2.entity.Role).ADMIN)")
     @GetMapping("/message")
     public ResponseEntity<String> getMessage(){
         String message = "Hello from secured endpoint";
