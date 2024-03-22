@@ -26,21 +26,33 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
     private final LogoutService logoutService;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+//    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .exceptionHandling(excep -> {
-                    excep.authenticationEntryPoint(jwtAuthenticationEntryPoint);
-                    excep.accessDeniedHandler(customAccessDeniedHandler);
-                })
+//                .exceptionHandling(excep -> {
+//                    excep.authenticationEntryPoint(jwtAuthenticationEntryPoint);
+//                    excep.accessDeniedHandler(customAccessDeniedHandler);
+//                })
 
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/api/auth/**").permitAll();
+                    auth.requestMatchers("/swagger-ui/**", "/swagger-ui.html",
+                            "/v2/api-docs",
+                            "/v3/api-docs",
+                            "/v3/api-docs/**",
+                            "/swagger-resources",
+                            "/swagger-resources/**",
+                            "/configuration/ui",
+                            "/configuration/security",
+                            "/webjars/**"
+                            ).permitAll();
+                    auth.requestMatchers("/demo/message").hasRole("ADMIN");
+                    auth.requestMatchers("demo/check").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement( sm-> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

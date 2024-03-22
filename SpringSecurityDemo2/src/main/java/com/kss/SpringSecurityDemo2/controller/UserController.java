@@ -3,6 +3,7 @@ package com.kss.SpringSecurityDemo2.controller;
 
 import com.kss.SpringSecurityDemo2.dto.ChangePasswordDto;
 import com.kss.SpringSecurityDemo2.service.UserService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -19,16 +20,22 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/demo")
 @RequiredArgsConstructor
+//@PreAuthorize("hasRole('ROLE_ ADMIN')")
 public class UserController {
 
     private final UserService userService;
 
 //    @PreAuthorize("hasRole('ADMIN)")
-    @PreAuthorize("hasRole(T(com.kss.SpringSecurityDemo2.entity.Role).ADMIN)")
+//    @PreAuthorize("hasRole(T(com.kss.SpringSecurityDemo2.entity.Role).ADMIN)")
     @GetMapping("/message")
     public ResponseEntity<String> getMessage(){
         String message = "Hello from secured endpoint";
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @GetMapping("/check")
+    public String getCheck(){
+        return "Just checking the endpoint";
     }
 
     @PostMapping("/change-password")
@@ -46,5 +53,11 @@ public class UserController {
     public ResponseEntity<String> sendEmailOtp(@PathVariable String email){
         return new ResponseEntity<>(userService.sendEmailOtp(email), HttpStatus.OK);
     }
+
+    @PostMapping("/send-email-attachment/{email}")
+    public ResponseEntity<String> sendEmailWithAttachment(@PathVariable String email) throws MessagingException {
+        return ResponseEntity.status(200).body(userService.sendEmailWithAttachment(email));
+    }
+
 
 }

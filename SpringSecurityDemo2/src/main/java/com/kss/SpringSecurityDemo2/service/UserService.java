@@ -6,6 +6,7 @@ import com.kss.SpringSecurityDemo2.dto.ChangePasswordDto;
 import com.kss.SpringSecurityDemo2.entity.User;
 import com.kss.SpringSecurityDemo2.repository.UserRepository;
 import com.kss.SpringSecurityDemo2.utils.EmailUtil;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -58,6 +59,10 @@ public class UserService {
 
     public String sendEmailOtp(String email){
         return emailUtil.sendEmailOtp(email);
+    }
+
+    public String sendEmailWithAttachment(String email) throws MessagingException {
+        return emailUtil.sendEmailWithAttachment(email);
     }
 
 

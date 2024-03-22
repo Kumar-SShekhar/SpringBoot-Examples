@@ -5,6 +5,8 @@ import com.kss.SpringSecurityDemo2.dto.ForgotPasswordVerificationDto;
 import com.kss.SpringSecurityDemo2.dto.LoginDto;
 import com.kss.SpringSecurityDemo2.dto.RegisterDto;
 import com.kss.SpringSecurityDemo2.service.AuthenticationService;
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.SessionTrackingMode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,6 +21,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Authentication")     // Used to change the name of the controller or class in swagger
+//@Hidden // It is used to hide this controller(class) in swagger
 @RequiredArgsConstructor
 public class AuthenticationController {
 
@@ -41,6 +45,7 @@ public class AuthenticationController {
     }
 
 
+//    @Hidden   // It is used to hide this endpoint(method) in swagger
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestBody Map<String,String> emailRequest){
         return new ResponseEntity<>(authenticationService.forgotPassword(emailRequest.get("email")), HttpStatus.OK);
