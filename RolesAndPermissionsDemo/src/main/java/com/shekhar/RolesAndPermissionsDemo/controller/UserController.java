@@ -1,5 +1,6 @@
 package com.shekhar.RolesAndPermissionsDemo.controller;
 
+import com.shekhar.RolesAndPermissionsDemo.dto.AuthenticationResponse;
 import com.shekhar.RolesAndPermissionsDemo.dto.LoginDto;
 import com.shekhar.RolesAndPermissionsDemo.dto.RegisterDto;
 import com.shekhar.RolesAndPermissionsDemo.service.UserService;
@@ -14,13 +15,18 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterDto registerDto){
+    public AuthenticationResponse register(@RequestBody RegisterDto registerDto){
         return userService.register(registerDto);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginDto loginDto){
+    public AuthenticationResponse login(@RequestBody LoginDto loginDto){
         return userService.login(loginDto);
+    }
+
+    @GetMapping("/demo")
+    public String getMessage(){
+        return "From demo endpoint";
     }
 
 }

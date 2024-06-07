@@ -32,8 +32,9 @@ public class SecurityConfig {
 //                .exceptionHandling(Customizer.withDefaults())
 
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/**" ).permitAll()
-                    .anyRequest().authenticated();
+                    auth.requestMatchers("/api/auth/**" ).permitAll();
+                    auth.requestMatchers("/demo/check").permitAll();
+                    auth.anyRequest().authenticated();
                 })
                 .sessionManagement( sm-> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

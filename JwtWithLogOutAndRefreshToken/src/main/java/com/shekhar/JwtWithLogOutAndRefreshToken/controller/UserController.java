@@ -22,5 +22,10 @@ public class UserController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @GetMapping("/check")
+    public String getCheck(){
+        return "checking ...... +   222";
+    }
+
 
 }

@@ -1,5 +1,7 @@
 package com.shekhar.RolesAndPermissionsDemo.service;
 
+import com.shekhar.RolesAndPermissionsDemo.config.JwtService;
+import com.shekhar.RolesAndPermissionsDemo.dto.AuthenticationResponse;
 import com.shekhar.RolesAndPermissionsDemo.dto.LoginDto;
 import com.shekhar.RolesAndPermissionsDemo.dto.RegisterDto;
 import com.shekhar.RolesAndPermissionsDemo.model.Role;
@@ -20,30 +22,54 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
-    public String register(RegisterDto registerDto){
+    public AuthenticationResponse register(RegisterDto registerDto){
+
         User user = new User();
         user.setName(registerDto.getName());
         user.setEmail(registerDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         user.setRole(Role.USER);
 
-        if(userRepository.findByEmail(registerDto.getEmail()).isPresent()){
-            return "User already exists";
-        }
-
         userRepository.save(user);
+        String jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
 
-        return "User Registered Successfully";
+//        User user = new User();
+//        user.setName(registerDto.getName());
+//        user.setEmail(registerDto.getEmail());
+//        user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+//        user.setRole(Role.USER);
+//
+//        if(userRepository.findByEmail(registerDto.getEmail()).isPresent()){
+//            return "User already exists";
+//        }
+//
+//        userRepository.save(user);
+//
+//        return "User Registered Successfully";
     }
 
-    public String login(LoginDto loginDto){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
+    public AuthenticationResponse login(LoginDto loginDto){
 
-//        if(authentication == null){
-//            return "Invalid credentials";
-//        }
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "User Login Successful";
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword())
+        );
+        User user = userRepository.findByEmail(loginDto.getEmail()).orElseThrow();
+        String jwtToken = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .build();
+
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
+//
+////        if(authentication == null){
+////            return "Invalid credentials";
+////        }
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        return "User Login Successful";
     }
 }
